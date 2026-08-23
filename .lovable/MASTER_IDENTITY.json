@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "master": "MARTECH",
+  "masterPortalKey": "marcomm",
+  "masterRepo": "vivekearthz/my-secret-automagic-0ad5a80b",
+  "masterBranch": "main",
+  "masterHost": "https://my-secret-automagic.lovable.app",
+  "masterApiBase": "https://my-secret-automagic.lovable.app/api/public",
+  "githubOwner": "vivekearthz",
+  "ownerEmail": "vivekearthz@gmail.com",
+  "sharedVaultRepo": "vivekearthz/martech-fleet-registry",
+  "sharedVaultBranch": "main",
+  "patchVersion": "v59",
+  "agentVersion": 6,
+  "endpoints": {
+    "instructions": "https://my-secret-automagic.lovable.app/api/public/portal/instructions",
+    "assets": "https://my-secret-automagic.lovable.app/api/public/portal/assets",
+    "patch": "https://my-secret-automagic.lovable.app/api/public/portal/patch",
+    "modelRegistry": "https://my-secret-automagic.lovable.app/api/public/portal/model-registry",
+    "serviceCatalog": "https://my-secret-automagic.lovable.app/api/public/portal/service-catalog",
+    "ingest": "https://my-secret-automagic.lovable.app/api/public/hooks/slave-ingest",
+    "aiGateway": "https://my-secret-automagic.lovable.app/api/public/ai-gateway",
+    "heartbeat": "https://my-secret-automagic.lovable.app/api/public/portal/heartbeat",
+    "commandAck": "https://my-secret-automagic.lovable.app/api/public/portal/command-ack"
+  },
+  "announcedAt": "2026-08-23T09:34:46.192Z"
+}
