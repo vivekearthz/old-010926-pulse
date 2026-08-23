@@ -1,32 +1,56 @@
-# Master Patch v56 — Total Master Authority, Two-Way Consolidation Ledger & Current-Repo-Only Publishing
+# MASTER PATCH v59 — Repo Name Policy + IMSP JSON Channel
 
-Master: MARTECH (marcomm). Audience: master portal, every sub-portal and every slave portal. Supersedes v55 (all earlier patches still apply).
+Mandatory for the master portal, every sub-portal and every slave portal owned by
+vivekearthz (vivekearthz@gmail.com). Master wins on every conflict.
 
-## 1. The master has FULL authority — master always wins
-- Every portal under the owner's GitHub account is a SLAVE of MARTECH by default. There is no opt-out and no partial enrollment.
-- On every conflict between a slave value and the master value (policy, config, connector slot names, sender identity, AI ladders, SEO identity, cadence, templates), the MASTER VALUE WINS and is force-written back to the slave.
-- Slaves may only ADD net-new innovations. Those are pulled up, consolidated and then re-published to the whole fleet by the master — never adopted locally in isolation.
+## 1. GitHub repository naming policy (zero human intervention)
 
-## 2. Auto-enrollment of any NEW portal (zero human steps)
-- Every sweep lists all repositories under the owner account, detects any project not present in the master registry, and enrolls it as an active slave: registry row + linked brand + born-wired agent files + current patch + republish.
-- Newly created projects therefore join the fleet on the next sweep with nothing to paste and no repo to create by hand.
+1. A repository name MUST equal the Lovable project name, slugified
+   (lowercase, non-alphanumeric -> "-", max 90 chars). Random Lovable shells
+   such as `my-secret-automagic-0ad5a80b` are NON-COMPLIANT.
+2. Non-compliant repos are RENAMED in place to the canonical name via
+   `PATCH /repos/{owner}/{repo} { name }`. Never create a duplicate repo, never
+   ask a human to rename anything.
+3. If the canonical name is already occupied by a different repository (project
+   moved to another workspace and re-connected to GitHub), the incumbent is
+   RETIRED FIRST by renaming it to `old-DDMMYY-<name>` (UTC date), then the live
+   repo takes the canonical name.
+4. Orphan random-named repos that no active portal claims are retired with the
+   same `old-DDMMYY-` prefix.
+5. `portal_registry.github_repo` is repaired after every rename, legacy links are
+   archived to `audit_logs`, and the admin ledger shows CURRENT repos only.
+6. Enforcement runs every 24 hours (pg_cron `repo-name-policy-daily`, 02:50 IST)
+   plus inside the daily fleet orchestrator, then triggers a fleet republish.
 
-## 3. Two-way consolidation into ONE canonical sheet
-- PULL: every portal reports its capabilities, best-performing strategies and configs upstream.
-- CONSOLIDATE: the master merges them into a single canonical catalog (highest version wins, master wins ties), recording origin portal and which portals already hold each capability.
-- REPUBLISH: the consolidated sheet is pushed back down to EVERY portal as capability specs + policy bundle, so all portals converge on the union of the fleet's best solutions.
+Master implementation: `src/lib/repo-naming.server.ts`,
+hook `/api/public/hooks/repo-name-policy`.
 
-## 4. CURRENT GitHub repositories only
-- The registry keeps exactly one current repository per active portal, pinned to the canonical map.
-- Legacy/renamed/duplicate repository links (from workspace moves) are archived into audit logs and cleared. The admin surface lists only live repositories, and all code publishing targets those current repos only.
+## 2. IMSP — Inter-Master Slave Protocol (JSON) is now live on the master
 
-## 5. Patch-version convergence loop (no drift allowed)
-- The sweep re-applies the current patch to every mapped slave with retries, then loopback-verifies the file exists on the slave branch.
-- It repeats until 100% of active portals report `patch_status = verified` at the current version, or the bounded pass limit is hit; laggards are escalated to the self-heal ladder and retried on the next 02:30 IST run.
-- After convergence the master forces a fleet-wide republish so every portal is live on the same version.
+Root cause of the fleet error "Only HTML requests are supported here": slaves
+called flat JSON paths that had no server route, so the SSR shell answered with
+HTML even though the HMAC signature was valid. Master now serves IMSP JSON on:
 
-## Required environment
-MASTER_HOST, MASTER_SYNC_SECRET, PRODUCT (= portal_key), REPUBLISH_HOOK_URL. `LOVABLE_API_KEY` remains NOT required anywhere (v55 credit freedom stands).
+- `POST /api/portal-sync`
+- `POST /api/public/portal-sync`
+- `POST /api/imsp/{action}`
+- `POST /api/public/imsp/{action}`
+
+Actions: `sync` (default), `instructions`, `patch`, `report`, `ack`,
+`heartbeat`, `capabilities`, `ping` (unauthenticated health probe).
+
+Auth: `X-Sync-Signature: hmac_sha256(MASTER_SYNC_SECRET, rawBody)`.
+Body: `{ "portal_key": "<slave key>", "action": "sync", "patch_version": "v59" }`.
+Every authenticated call updates `last_event_at` + `sync_status`, so a sync is
+also a heartbeat. Slaves MUST treat any HTML response as a transport failure and
+retry against the next alias with exponential backoff.
+
+## 3. Slave requirements
+
+- Keep the born-wired `/api/public/portal/sync-now` receiver.
+- Push code inventory and command acks to the master IMSP `report` / `ack`
+  actions; never assume pull-only sync.
+- Do not rename your own GitHub repo; the master owns naming.
 
 
-<!-- applied-by: MARTECH master | version: v56 | reason: cron:fleet-identity-drift | at: 2026-08-19T02:28:02.249Z -->
+<!-- applied-by: MARTECH master | version: v59 | reason: cron:fleet-identity-drift | at: 2026-08-23T02:28:56.090Z -->
