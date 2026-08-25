@@ -4,7 +4,7 @@
   "portalKey": "pulse",
   "role": "slave",
   "master": "MARTECH",
-  "patchVersion": "v59",
+  "patchVersion": "v70",
   "managedBy": "project-guardian",
   "masterRepo": "vivekearthz/my-secret-automagic-0ad5a80b",
   "masterHost": "https://my-secret-automagic.lovable.app",
