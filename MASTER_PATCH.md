@@ -1,56 +1,60 @@
-# MASTER PATCH v59 — Repo Name Policy + IMSP JSON Channel
+# MASTER PATCH v70 — Version Convergence + Shared Email/WhatsApp Capacity
 
 Mandatory for the master portal, every sub-portal and every slave portal owned by
-vivekearthz (vivekearthz@gmail.com). Master wins on every conflict.
+vivekearthz (vivekearthz@gmail.com). Master wins on every conflict. This bundle
+supersedes v59 and folds in everything authored between v60 and v70.
 
-## 1. GitHub repository naming policy (zero human intervention)
+## 1. ONE version constant (root cause of the "stuck at v59" drift)
 
-1. A repository name MUST equal the Lovable project name, slugified
-   (lowercase, non-alphanumeric -> "-", max 90 chars). Random Lovable shells
-   such as `my-secret-automagic-0ad5a80b` are NON-COMPLIANT.
-2. Non-compliant repos are RENAMED in place to the canonical name via
-   `PATCH /repos/{owner}/{repo} { name }`. Never create a duplicate repo, never
-   ask a human to rename anything.
-3. If the canonical name is already occupied by a different repository (project
-   moved to another workspace and re-connected to GitHub), the incumbent is
-   RETIRED FIRST by renaming it to `old-DDMMYY-<name>` (UTC date), then the live
-   repo takes the canonical name.
-4. Orphan random-named repos that no active portal claims are retired with the
-   same `old-DDMMYY-` prefix.
-5. `portal_registry.github_repo` is repaired after every rename, legacy links are
-   archived to `audit_logs`, and the admin ledger shows CURRENT repos only.
-6. Enforcement runs every 24 hours (pg_cron `repo-name-policy-daily`, 02:50 IST)
-   plus inside the daily fleet orchestrator, then triggers a fleet republish.
+1. No portal may hard-code a patch/policy version string anywhere. The single
+   source of truth is `src/lib/fleet-version.ts`
+   (`FLEET_PATCH_VERSION`, `FLEET_VERSION_NUMBER`).
+2. `/api/public/portal/version` MUST report that constant, never a literal.
+3. Version comparison is NUMERIC. A portal already ahead of the master is never
+   downgraded; only portals strictly behind are re-patched.
+4. The daily orchestrator re-dispatches the current bundle to every portal whose
+   reported version is behind, with retry + backoff, and re-verifies by loopback
+   against the live deployment (not just the GitHub commit).
 
-Master implementation: `src/lib/repo-naming.server.ts`,
-hook `/api/public/hooks/repo-name-policy`.
+## 2. Inherited mandates v60 - v69 (unchanged, restated for slaves)
 
-## 2. IMSP — Inter-Master Slave Protocol (JSON) is now live on the master
+- v60/v61 Shared fleet model registry + weekly free-LLM catalogue refresh.
+- v62 Permissive-license service inheritance (interview copilot family).
+- v63 Fleet service cross-reference: internal-first reuse is enforced in the UI.
+- v64 Autonomous YouTube Shorts automation agent.
+- v65 Master workspace / repo / host identity re-announcement.
+- v66 Commerce + customer-journey parity (pricing, checkout, post-payment
+  hand-off, logout) on every portal.
+- v67 Continuous parity + 3-strike escalation with weekly deep sweep.
+- v68 Total Lovable independence (AI **and** Cloud lanes).
+- v69 Shared fleet email authority: master-owned provider keys only.
 
-Root cause of the fleet error "Only HTML requests are supported here": slaves
-called flat JSON paths that had no server route, so the SSR shell answered with
-HTML even though the HMAC signature was valid. Master now serves IMSP JSON on:
+## 3. Email capacity is POOLED, never single-provider
 
-- `POST /api/portal-sync`
-- `POST /api/public/portal-sync`
-- `POST /api/imsp/{action}`
-- `POST /api/public/imsp/{action}`
+1. Slaves hold NO email provider keys. They relay through the master.
+2. Daily email capacity reported anywhere (dashboards, digests, pre-flight
+   reports) MUST be the POOLED free allowance across every configured provider
+   — Brevo, SendPulse, Mailjet, MailerSend, SendGrid, Elastic Email, SMTP2GO —
+   not the first provider's 300/day.
+3. Rotation stays quota-aware: providers at their daily allowance are skipped,
+   the rest are ordered by load ratio.
 
-Actions: `sync` (default), `instructions`, `patch`, `report`, `ack`,
-`heartbeat`, `capabilities`, `ping` (unauthenticated health probe).
+## 4. WhatsApp reinstatement ramp target = 750/day
 
-Auth: `X-Sync-Signature: hmac_sha256(MASTER_SYNC_SECRET, rawBody)`.
-Body: `{ "portal_key": "<slave key>", "action": "sync", "patch_version": "v59" }`.
-Every authenticated call updates `last_event_at` + `sync_status`, so a sync is
-also a heartbeat. Slaves MUST treat any HTML response as a transport failure and
-retry against the next alias with exponential backoff.
+1. The post-reinstatement ramp ends at the configured target
+   (`WA_MARKETING_DAILY_TARGET`, default **750**) instead of stalling at an
+   intermediate ladder rung.
+2. Once the ramp days exceed the ladder, the target cap applies permanently
+   while quality stays green.
+3. Hourly pacing must be able to deliver the target inside the send window;
+   the hourly cap default rises with the target.
+4. OTP / auth / service replies are never throttled by these caps.
 
-## 3. Slave requirements
+## 5. Self-healing
 
-- Keep the born-wired `/api/public/portal/sync-now` receiver.
-- Push code inventory and command acks to the master IMSP `report` / `ack`
-  actions; never assume pull-only sync.
-- Do not rename your own GitHub repo; the master owns naming.
+- Version drift, capacity drift and email-key drift are all repaired by the
+  daily 02:30 IST orchestrator with retry + backoff and owner escalation after
+  3 consecutive failures. No human step is ever required.
 
 
-<!-- applied-by: MARTECH master | version: v59 | reason: cron:fleet-identity-drift | at: 2026-08-24T02:25:36.472Z -->
+<!-- applied-by: MARTECH master | version: v70 | reason: loopback-self-heal | at: 2026-08-25T21:45:11.835Z -->
