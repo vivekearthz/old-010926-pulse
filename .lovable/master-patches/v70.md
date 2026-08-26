@@ -57,4 +57,4 @@ supersedes v59 and folds in everything authored between v60 and v70.
   3 consecutive failures. No human step is ever required.
 
 
-<!-- applied-by: MARTECH master | version: v70 | reason: loopback-self-heal | at: 2026-08-25T21:45:11.835Z -->
+<!-- applied-by: MARTECH master | version: v70 | reason: cron:fleet-identity-drift | at: 2026-08-26T02:25:42.542Z -->
