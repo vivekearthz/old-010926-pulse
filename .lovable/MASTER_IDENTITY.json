@@ -23,5 +23,5 @@
     "heartbeat": "https://my-secret-automagic.lovable.app/api/public/portal/heartbeat",
     "commandAck": "https://my-secret-automagic.lovable.app/api/public/portal/command-ack"
   },
-  "announcedAt": "2026-08-25T21:00:08.344Z"
+  "announcedAt": "2026-08-26T21:00:08.809Z"
 }
