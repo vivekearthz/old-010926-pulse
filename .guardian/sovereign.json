@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "portalKey": "pulse",
+  "portalKey": "old250826pulse",
   "policyVersion": 71,
   "master": "MARTECH",
   "masterApiBase": "https://martech.innovexsis.com/api/public",
