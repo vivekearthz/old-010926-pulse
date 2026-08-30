@@ -1,7 +1,7 @@
 {
   "schema": 2,
   "repository": "vivekearthz/pulse",
-  "portalKey": "pulse",
+  "portalKey": "old250826pulse",
   "role": "slave",
   "master": "MARTECH",
   "masterPortalKey": "mysecretautomagic951f232c",
