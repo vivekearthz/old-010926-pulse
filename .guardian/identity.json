@@ -1,14 +1,14 @@
 {
-  "schema": 2,
-  "repository": "vivekearthz/pulse",
+  "schema": 1,
+  "repository": "vivekearthz/Innovexsis",
   "portalKey": "old250826pulse",
   "role": "slave",
   "master": "MARTECH",
   "masterPortalKey": "mysecretautomagic951f232c",
-  "masterRepo": "vivekearthz/my-secret-automagic-951f232c",
-  "masterHost": "https://martech.innovexsis.com",
-  "masterApiBase": "https://martech.innovexsis.com/api/public",
+  "masterRepo": "vivekearthz/my-secret-automagic-0ad5a80b",
+  "masterHost": "https://my-secret-automagic.lovable.app",
+  "masterApiBase": "https://my-secret-automagic.lovable.app/api/public",
   "patchVersion": "v70",
   "agentVersion": 6,
-  "managedBy": "martech-master"
+  "managedBy": "project-guardian"
 }
