@@ -11,3 +11,9 @@ alwaysApply: true
 - Never commit secrets. Never weaken RLS or use the service role for ordinary reads.
 - Tasks come from `.agent-tasks/queue/`; results MUST be written to `.agent-tasks/results/<task-id>.json`.
 - Prefer small focused modules; keep files under ~400 lines.
+- Runtime truth first: this repo ships Vinv (https://github.com/VinvAI/VinvAI). Before fixing any
+  runtime/behavioural bug, call the Vinv MCP tools (`vinv.run_service`,
+  `vinv.reproduce_issue`), fix using the linked trace, then `vinv.verify_fix`
+  and include the verification evidence in the result JSON.
+- Never hand-tune Vinv's context budget; its Thompson-sampling policy owns it.
+- Vinv runs locally only — never upload source or unredacted traces.
