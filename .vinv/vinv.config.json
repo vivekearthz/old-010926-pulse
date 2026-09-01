@@ -1,0 +1,53 @@
+{
+  "$schema": "https://raw.githubusercontent.com/VinvAI/VinvAI/main/schema/vinv.config.schema.json",
+  "project": "pulse",
+  "repo": "vivekearthz/pulse",
+  "runtime": {
+    "start": "bun run dev",
+    "readyUrl": "http://localhost:8080/",
+    "healthPaths": [
+      "/",
+      "/api/public/portal/version"
+    ],
+    "language": "typescript"
+  },
+  "trace": {
+    "sourceMap": true,
+    "captureServerFunctions": true,
+    "captureHttp": true,
+    "captureUnhandled": true,
+    "redact": [
+      "authorization",
+      "apikey",
+      "x-webhook-secret",
+      "x-slave-key",
+      "password",
+      "token",
+      "secret"
+    ]
+  },
+  "mcp": {
+    "expose": true,
+    "endpoint": "http://127.0.0.1:7801/mcp",
+    "tools": [
+      "vinv.run_service",
+      "vinv.collect_traces",
+      "vinv.link_trace_to_source",
+      "vinv.reproduce_issue",
+      "vinv.verify_fix"
+    ]
+  },
+  "context": {
+    "policy": "thompson-sampling",
+    "maxTraceTokens": 6000,
+    "minTraceTokens": 400
+  },
+  "report": {
+    "masterHook": "/api/public/hooks/vinv-trace",
+    "includeVerification": true
+  },
+  "privacy": {
+    "localOnly": true,
+    "uploadSource": false
+  }
+}
