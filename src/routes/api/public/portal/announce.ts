@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { createHmac } from "crypto";
 
-const PRODUCT = process.env.SLAVE_PRODUCT_KEY ?? "pulse";
+const PRODUCT = process.env.SLAVE_PRODUCT_KEY ?? "old250826pulse";
 const MASTER = process.env.MASTER_BASE_URL ?? "https://martech.innovexsis.com";
 const PATCH_VERSION = process.env.SLAVE_PATCH_VERSION ?? "v72";
 
