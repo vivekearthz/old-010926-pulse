@@ -10,7 +10,7 @@
   "ownerEmail": "vivekearthz@gmail.com",
   "sharedVaultRepo": "vivekearthz/martech-fleet-registry",
   "sharedVaultBranch": "main",
-  "patchVersion": "v70",
+  "patchVersion": "v72",
   "agentVersion": 6,
   "endpoints": {
     "instructions": "https://my-secret-automagic.lovable.app/api/public/portal/instructions",
@@ -23,5 +23,5 @@
     "heartbeat": "https://my-secret-automagic.lovable.app/api/public/portal/heartbeat",
     "commandAck": "https://my-secret-automagic.lovable.app/api/public/portal/command-ack"
   },
-  "announcedAt": "2026-09-01T21:00:09.964Z"
+  "announcedAt": "2026-09-03T21:00:08.813Z"
 }
