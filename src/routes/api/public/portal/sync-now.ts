@@ -8,7 +8,7 @@ import { createHmac, timingSafeEqual } from "crypto";
 // Master owns this file - do not hand-edit.
 // ---------------------------------------------------------------------------
 
-const PRODUCT = process.env.SLAVE_PRODUCT_KEY ?? "pulse";
+const PRODUCT = process.env.SLAVE_PRODUCT_KEY ?? "old250826pulse";
 
 function verify(raw: string, header: string | null): boolean {
   const secret = process.env.MASTER_SYNC_SECRET;
